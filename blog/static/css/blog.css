@@ -2,7 +2,6 @@ body {
     margin:0;
     padding:0;
     font-family:helvetica, sans-serif;
-    background: #2f3542;
 }
 
 a {
@@ -52,7 +51,7 @@ p.date {
 label {
     float:left;
     clear:both;
-    color: #bab9b9;
+    color:#333;
     margin-bottom:4px;
 }
 input, textarea {
@@ -89,5 +88,5 @@ input[type=submit] {
 .comment .info {
     font-weight:bold;
     font-size:12px;
-    color: #8f8f8f;
+    color:#666;
 }
