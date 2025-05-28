@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
 
-# Create your models here.
+
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset()\
-                .filter(status=Post.Status.PUBLISHED)
+                      .filter(status=Post.Status.PUBLISHED)
 
 
 class Post(models.Model):
@@ -28,15 +28,15 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=2,
-                              choices=Status.choices, # type: ignore[attr-defined]
+                              choices=Status.choices,
                               default=Status.DRAFT)
 
-    objects = models.Manager()
-    published = PublishedManager()
+    objects = models.Manager() # The default manager.
+    published = PublishedManager() # Our custom manager.
     tags = TaggableManager()
 
     class Meta:
-        ordering = ['-publish',]
+        ordering = ['-publish']
         indexes = [
             models.Index(fields=['-publish']),
         ]
@@ -49,7 +49,8 @@ class Post(models.Model):
                        args=[self.publish.year,
                              self.publish.month,
                              self.publish.day,
-                             self.slug,])
+                             self.slug])
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,
