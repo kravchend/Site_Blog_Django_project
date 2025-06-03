@@ -34,15 +34,56 @@
     ```bash
     pip install -r requirements.txt
     ```
-4. **Примените миграции базы данных:**
+4. ** Настройка базы данных PostgreSQL**
     ```bash
+   Для macOS:
+   brew install postgresql
+   brew services start postgresql
+  
+   Для Ubuntu/Debian:
+   sudo apt update
+   sudo apt install postgresql postgresql-contrib
+   sudo service postgresql start
+   
+   **Создайте базу данных и пользователя**
+   Войдите в терминале под пользователем : `postgres`
+     sudo -u postgres psql
+   Затем создайте базу данных и пользователя (замените `blog_db`, `blog_user` и `your_password` на ваши значения):
+   CREATE DATABASE blog_db;
+   CREATE USER blog_user WITH PASSWORD 'your_password';
+   ALTER ROLE blog_user SET client_encoding TO 'utf8';
+   ALTER ROLE blog_user SET default_transaction_isolation TO 'read committed';
+   ALTER ROLE blog_user SET timezone TO 'UTC';
+   GRANT ALL PRIVILEGES ON DATABASE blog_db TO blog_user;
+   \q
     python manage.py migrate
     ```
-5. **Создайте суперпользователя (по желанию):**
-    ```bash
-    python manage.py createsuperuser
+   5. **Создайте суперпользователя (по желанию):**
+       ```bash
+       python manage.py createsuperuser
+       ```
+
+   6. **Обновите настройки подключения в файле `mysite/settings.py`**
+      ```bash
+      DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'blog_db',            # Имя вашей базы данных
+           'USER': 'blog_user',          # Имя пользователя
+           'PASSWORD': 'your_password',  # Пароль пользователя
+           'HOST': 'localhost',          # Или другой адрес сервера БД
+           'PORT': '5432',               # Порт PostgreSQL по умолчанию
+           }
+      }
+      ```
+   
+7. **Установите пакет для работы с PostgreSQL**
+Убедитесь, что в вашем окружении установлен пакет [psycopg2](https://pypi.org/project/psycopg2/):
+   ```bash
+    pip install psycopg2
     ```
-6. **Запустите сервер разработки:**
+
+8. **Запустите сервер разработки:**
     ```bash
     python manage.py runserver
     ```
@@ -68,3 +109,5 @@
 ---
 
 **Если возникнут вопросы — пишите!**
+
+   Kravchend@gmail.com
